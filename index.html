@@ -12,8 +12,19 @@
     <script>
       document
         .getElementById("fetchExercises")
-        .addEventListener("click", () => {
+        .addEventListener("click", async () => {
           console.log("Knapp trykket!");
+          history.pushState({}, "", "/exercises");
+
+          try {
+            const response = await fetch("/api/exercises");
+            if (!response.ok) throw new Error(`Feil: ${response.status}`);
+
+            const data = await response.json();
+            console.log("Data mottatt:", data);
+          } catch (error) {
+            console.error("Feil ved henting:", error);
+          }
         });
     </script>
   </body>
