@@ -9,11 +9,11 @@
     <h1>Test API</h1>
     <button id="fetchExercises">Hent data</button>
     <ul id="exerciseList"></ul>
+
     <script>
       document
         .getElementById("fetchExercises")
         .addEventListener("click", async () => {
-          console.log("Knapp trykket!");
           history.pushState({}, "", "/exercises");
 
           try {
@@ -21,9 +21,24 @@
             if (!response.ok) throw new Error(`Feil: ${response.status}`);
 
             const data = await response.json();
-            console.log("Data mottatt:", data);
+            const list = document.getElementById("exerciseList");
+            list.innerHTML = data.length
+              ? data
+                  .map(
+                    (exercise) => `
+                <li>
+                  <strong>${exercise.name}</strong>
+                  <details>
+                    <summary>Vis instruksjoner</summary>
+                    <p>${exercise.instructions}</p>
+                  </details>
+                </li>
+              `
+                  )
+                  .join("")
+              : "<li>Ingen øvelser funnet.</li>";
           } catch (error) {
-            console.error("Feil ved henting:", error);
+            console.error("Kunne ikke hente øvelser:", error);
           }
         });
     </script>
