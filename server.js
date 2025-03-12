@@ -1,19 +1,19 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 const PORT = 3000;
 
-app.use(cors()); // Tillater frontend-forespørsler
+app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
-// Root-endepunkt for å unngå "Cannot GET /" feilen
-app.get("/", (req, res) => {
-  res.send("Serveren kjører!");
+app.get(["/", "/exercises"], (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Henter bicepsøvelser fra API
-app.get("/exercises", async (req, res) => {
+app.get("/api/exercises", async (req, res) => {
   try {
     const response = await fetch(
       "https://api.api-ninjas.com/v1/exercises?muscle=biceps",
