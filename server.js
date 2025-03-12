@@ -20,7 +20,7 @@ app.get("/api/exercises", async (req, res) => {
       {
         method: "GET",
         headers: {
-          "X-Api-Key": "VRMrYMsPsy3J1UwKVxCVOQ==sIdjhavkZ2Ia5GjA",
+          "X-Api-Key": process.env.API_KEY,
           "Content-Type": "application/json",
         },
       }
